@@ -1,6 +1,6 @@
 # 00 — Setup
 
-Probes your laptop, picks the right llama.cpp backend, installs Python deps, and downloads a GGUF model sized for your RAM.
+Probes your laptop, picks the right llama.cpp backend, installs Python deps, and downloads TinyLlama-1.1B by default.
 
 ## Run
 
@@ -25,7 +25,9 @@ The script:
    - Intel/AMD with Vulkan → `CMAKE_ARGS="-DGGML_VULKAN=on"` (env override: `LLAMA_VULKAN=1`)
    - Everything else → CPU prebuilt wheel
 4. Runs `detect-hardware.py` and writes `hardware.json` at the repo root.
-5. Runs `download-model.py` and writes `models/active.json` pointing at the GGUF files.
+5. Runs `download-model.py` and writes `models/active.json` pointing at the TinyLlama GGUF files.
+
+To restore RAM-based model selection, run `python 00-setup/download-model.py --auto-tier` after setup.
 
 ## Outputs
 

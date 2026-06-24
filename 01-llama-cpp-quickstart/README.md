@@ -14,7 +14,7 @@ By the end of this track you should be able to answer:
 
 ```bash
 # from repo root, with .venv activated
-python 01-llama-cpp-quickstart/benchmark.py
+make bench
 ```
 
 This loads the primary GGUF model from `models/active.json`, runs:

@@ -13,9 +13,9 @@ This is the same shape of stack the deck talks about with vLLM and SGLang — ju
 
 ## Run
 
-There are two ways to launch `llama-server`:
+There are two ways to launch the local API. Use the native llama.cpp binary for this track's Prometheus requirement.
 
-### A. From the `llama-cpp-python` install (always works)
+### A. From the `llama-cpp-python` install (API-only)
 
 ```bash
 # from repo root, .venv activated
@@ -25,9 +25,17 @@ python -m llama_cpp.server --model "$(jq -r .primary_model models/active.json)" 
     --n_gpu_layers 99
 ```
 
-### B. From a native llama.cpp build (faster, used by the bonus track)
+The Python server provides the OpenAI-compatible API, but **does not expose `/metrics`**. It is useful for a quick API/pipeline check only.
 
-If you've already done `BONUS-llama-cpp-optimization/` and have a `bin/llama-server` from source:
+### B. Native llama.cpp build (required for `/metrics`)
+
+Build llama.cpp first (Apple Silicon example):
+
+```bash
+make build-llama LLAMA_CMAKE_FLAGS=-DGGML_METAL=ON
+```
+
+Then start its `llama-server` binary:
 
 ```bash
 ./BONUS-llama-cpp-optimization/llama.cpp/build/bin/llama-server \

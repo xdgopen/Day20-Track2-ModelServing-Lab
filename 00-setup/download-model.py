@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Download the recommended GGUF model for the laptop's RAM tier.
+"""Download a GGUF model for the lab.
 
-Reads `hardware.json` (produced by detect-hardware.py) and pulls a single
-GGUF file via huggingface_hub. Two quantizations downloaded so 02 and bonus
-tracks have something to compare.
+By default this downloads TinyLlama-1.1B, which keeps `make setup` fast and
+works on every supported laptop. Pass `--auto-tier` to select the model
+recommended from the RAM tier in `hardware.json` instead.
 """
 from __future__ import annotations
 
@@ -43,6 +43,8 @@ TIERS: dict[str, tuple[str, str, str]] = {
     ),
 }
 
+DEFAULT_TIER = "TinyLlama-1.1B"
+
 
 def pick_tier(rec_model: str) -> str:
     for key in TIERS:
@@ -58,6 +60,11 @@ def find_existing(out_dir: Path, filename: str) -> Path | None:
     return None
 
 
+def project_relative(path: Path) -> str:
+    """Store model paths portably in models/active.json."""
+    return str(path.resolve().relative_to(Path.cwd().resolve()))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Download GGUF model for the lab.")
     parser.add_argument(
@@ -65,15 +72,21 @@ def main() -> int:
         action="store_true",
         help="Don't fetch — only locate already-downloaded files and write models/active.json",
     )
+    parser.add_argument(
+        "--auto-tier",
+        action="store_true",
+        help="Select the model tier recommended from hardware.json instead of TinyLlama-1.1B",
+    )
     args = parser.parse_args()
 
-    hw_path = Path("hardware.json")
-    if not hw_path.exists():
-        print("ERROR: hardware.json not found. Run detect-hardware.py first.", file=sys.stderr)
-        return 1
-
-    hw = json.loads(hw_path.read_text())
-    tier_key = pick_tier(hw["recommendation"]["recommended_model"])
+    tier_key = DEFAULT_TIER
+    if args.auto_tier:
+        hw_path = Path("hardware.json")
+        if not hw_path.exists():
+            print("ERROR: hardware.json not found. Run detect-hardware.py first.", file=sys.stderr)
+            return 1
+        hw = json.loads(hw_path.read_text())
+        tier_key = pick_tier(hw["recommendation"]["recommended_model"])
     repo_id, q4_file, q2_file = TIERS[tier_key]
 
     out_dir = Path("models")
@@ -103,8 +116,8 @@ def main() -> int:
     config = {
         "tier": tier_key,
         "repo_id": repo_id,
-        "primary_model": str(primary),
-        "compare_model": str(compare),
+        "primary_model": project_relative(primary),
+        "compare_model": project_relative(compare),
     }
     Path("models/active.json").write_text(json.dumps(config, indent=2))
     print("\nWrote models/active.json — quickstart and bonus scripts read this.")

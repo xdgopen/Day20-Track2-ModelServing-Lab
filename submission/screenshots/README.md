@@ -5,7 +5,7 @@ Drop the following PNG/JPG files into this folder before submitting. Filenames a
 ## Minimum (6 shots)
 
 1. **`01-hardware-probe.png`** — terminal output of `python 00-setup/detect-hardware.py`. Must show CPU, RAM, accelerator, recommended model tier.
-2. **`02-quickstart-bench.png`** — terminal output of `python 01-llama-cpp-quickstart/benchmark.py` showing the per-prompt TTFT/TPOT/E2E table.
+2. **`02-quickstart-bench.png`** — terminal output of `make bench` showing the per-prompt TTFT/TPOT/E2E table. (`make` uses `.venv/bin/python`; do not use the system `python`.)
 3. **`03-server-running.png`** — `llama-server` running (terminal showing `listening on http://0.0.0.0:8080`) **plus** a `curl http://localhost:8080/metrics | head -30` excerpt.
 4. **`04-locust-10.png`** — locust headless summary table after `-u 10 -t 1m`. Must show RPS + P50/P95/P99.
 5. **`05-locust-50.png`** — same but `-u 50 -t 1m`.

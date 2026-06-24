@@ -1,0 +1,36 @@
+{
+  "primary": {
+    "label": "primary (Q4_K_M)",
+    "model_path": "/Users/thanhnguyen/github-classroom/GDGoC-FPTU/Day20-Track2-ModelServing-Lab/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf",
+    "n_threads": 12,
+    "n_ctx": 2048,
+    "n_batch": 512,
+    "n_gpu_layers": 99,
+    "load_ms": 106.8,
+    "ttft_ms_p50": 18.3,
+    "ttft_ms_p95": 18.5,
+    "tpot_ms_p50": 4.86,
+    "tpot_ms_p95": 8.38,
+    "e2e_ms_p50": 320.8,
+    "e2e_ms_p95": 325.1,
+    "e2e_ms_p99": 325.4,
+    "decode_rate_tok_s": 205.8
+  },
+  "compare": {
+    "label": "compare (Q2_K)",
+    "model_path": "/Users/thanhnguyen/github-classroom/GDGoC-FPTU/Day20-Track2-ModelServing-Lab/models/tinyllama-1.1b-chat-v1.0.Q2_K.gguf",
+    "n_threads": 12,
+    "n_ctx": 2048,
+    "n_batch": 512,
+    "n_gpu_layers": 99,
+    "load_ms": 200.8,
+    "ttft_ms_p50": 19.0,
+    "ttft_ms_p95": 19.2,
+    "tpot_ms_p50": 7.02,
+    "tpot_ms_p95": 7.38,
+    "e2e_ms_p50": 458.1,
+    "e2e_ms_p95": 465.9,
+    "e2e_ms_p99": 465.9,
+    "decode_rate_tok_s": 142.5
+  }
+}
